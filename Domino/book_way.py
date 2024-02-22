@@ -55,34 +55,35 @@ class DominoChain:
         for i in range(free_dominoes_num):
             base_domino = self.free_domino_list[i]
             if finish == 0:
-                self.domino_chain.append(base_domino)
+                self.domino_chain.append([base_domino])
                 self.free_domino_list.pop(i)
-                self.create_chain(free_dominoes_num-1, base_domino.first_num, base_domino.second_num)
+                self.create_chain(free_dominoes_num-1, base_domino.first_num, base_domino.second_num, possibility_num)
                 self.free_domino_list.insert(0, base_domino)
+                possibility_num += 1
             else:
                 start_finish_domino = Dominoes(start, finish)
                 if base_domino.connectable(start_finish_domino):
                     if base_domino.connectable_left(finish):
-                        self.domino_chain.append(base_domino)
+                        self.domino_chain[possibility_num].append(base_domino)
                         self.free_domino_list.pop(i)
-                        self.create_chain(free_dominoes_num - 1, start, base_domino.second_num)
+                        self.create_chain(free_dominoes_num - 1, start, base_domino.second_num, possibility_num)
                         self.free_domino_list.append(base_domino)  # ?????
                     elif base_domino.connectable_right(finish):
                         base_domino = base_domino.reverse()
-                        self.domino_chain.append(base_domino)
+                        self.domino_chain[possibility_num].append(base_domino)
                         self.free_domino_list.pop(i)
-                        self.create_chain(free_dominoes_num - 1, start, base_domino.second_num)
+                        self.create_chain(free_dominoes_num - 1, start, base_domino.second_num, possibility_num)
                         self.free_domino_list.append(base_domino.reverse())
                     elif base_domino.connectable_right(start):
-                        self.domino_chain.insert(0, base_domino)
+                        self.domino_chain[possibility_num].insert(0, base_domino)
                         self.free_domino_list.pop(i)
-                        self.create_chain(free_dominoes_num - 1, base_domino.first_num, finish)
+                        self.create_chain(free_dominoes_num - 1, base_domino.first_num, finish, possibility_num)
                         self.free_domino_list.append(base_domino)
                     else:
                         base_domino = base_domino.reverse()
-                        self.domino_chain.insert(0, base_domino)
+                        self.domino_chain[possibility_num].insert(0, base_domino)
                         self.free_domino_list.pop(i)
-                        self.create_chain(free_dominoes_num - 1, base_domino.first_num, finish)
+                        self.create_chain(free_dominoes_num - 1, base_domino.first_num, finish, possibility_num)
                         self.free_domino_list.append(base_domino.reverse())
 
 
