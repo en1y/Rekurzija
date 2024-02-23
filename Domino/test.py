@@ -1,6 +1,7 @@
 a = [2]
 a.insert(0, 1)
-print(a)
 
-a.append([])
-print(a)
+a = list(set(a))
+
+print(hash(a))
+

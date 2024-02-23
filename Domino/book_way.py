@@ -9,6 +9,13 @@ class Dominoes:
     def __copy__(self):
         return Dominoes(self.first_num, self.second_num)
 
+    def __eq__(self, other):
+        if type(other) == Dominoes:
+            if self.first_num == other.first_num and self.second_num == other.second_num:
+                return True
+            return False
+        raise TypeError("Dominoes may be only compared to Dominoes")
+
     def connectable(self, not_self):
         """Callable with Dominoes item type"""
         if type(not_self) == Dominoes:
@@ -53,10 +60,16 @@ class DominoChain:
         self.dominoes_num = len(self.free_domino_list)
 
     def __repr__(self):
+        self.update()
         result = """"""
         for i in self.domino_chain:
             result += f"{i} \n"
         return result
+
+    def update(self):
+        res = []
+        [res.append(x) for x in self.domino_chain if x not in res]
+        self.domino_chain = res.copy()
 
     def create_chain(self, free_dominoes_num, start=0, finish=0, possibility_num = 0):
         for i in range(free_dominoes_num):
