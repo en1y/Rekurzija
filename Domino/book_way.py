@@ -97,13 +97,11 @@ class DominoChain:
             base_domino = self.free_domino_list[i]
             self.free_domino_list.pop(i)
             if start == 0:
-                start = base_domino.first_num
                 finish = base_domino.second_num
-                self.domino_chain.append([Dominoes(start, finish), 'B'])
+                self.domino_chain.append([Dominoes(base_domino.first_num, finish), 'B'])
                 self.create_chain(free_dominoes_num - 1, start, finish,)
                 self.free_domino_list.insert(i, base_domino)
                 self.domino_chain.pop(0)
-                start = 0
             else:
                 if finish == base_domino.first_num:
                     self.domino_chain.append([base_domino, 'B'])
