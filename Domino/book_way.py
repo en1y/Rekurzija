@@ -84,11 +84,12 @@ class DominoChain:
         return result
 
     def domino_generator(self):
-        while True:
-            num1 = secrets.choice(range(7))
-            num2 = secrets.choice(range(7))
-            if Dominoes(num1, num2) not in self.free_domino_list:
-                return Dominoes(num1, num2)
+        for i in range(7):
+            for j in range(7):
+                self.free_domino_list.append(Dominoes(i, j))
+        for i in range(28 - self.dominoes_num):
+            delete_num = secrets.choice(range(self.dominoes_num))
+            self.free_domino_list.pop(delete_num)
 
     # def create_chain(self, free_dominoes_num, start=0, finish=0, possibility_num=0):
     #     for i in range(free_dominoes_num):
@@ -128,7 +129,7 @@ class DominoChain:
     #                     self.free_domino_list.pop(i)
     #                     self.create_chain(free_dominoes_num - 1, base_domino.first_num, finish, possibility_num)
     #                     self.free_domino_list.insert(0, base_domino.reverse())
-    def create_chain(self, free_dominoes_num = -1, start=0, finish=0):
+    def create_chain(self, free_dominoes_num=-1, start=0, finish=0):
         changed = False
         # "B" - base orientation, "R" - reversed orientation
         for i in range(free_dominoes_num):
@@ -160,7 +161,7 @@ class DominoChain:
                 self.free_domino_list.insert(i, self.domino_chain[len(self.domino_chain) - 1][0])
                 self.domino_chain.pop(len(self.domino_chain) - 1)
         if (start == 0 and finish != 0 and free_dominoes_num == 0) or (self.maxL == self.dominoes_num):
-            return (self.maxPath, self.maxL)
+            return self.maxPath, self.maxL
 
 
 def main():
@@ -168,7 +169,6 @@ def main():
     domino_chain = DominoChain(domino_num)
     domino_chain.create_chain(len(domino_chain.free_domino_list))
     print(domino_chain)
-
 
 
 main()
