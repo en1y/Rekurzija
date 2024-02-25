@@ -63,8 +63,7 @@ class DominoChain:
                 else:
                     raise TypeError("You have to input 2 elements both of which are in between 1 and 6")
         elif gen_or_input.lower().startswith("generate"[:len(gen_or_input)]):
-            for i in range(domino_num):
-                self.free_domino_list.append(self.domino_generator())
+            self.domino_generator()
             print(f"These are the the generated dominoes: {[i for i in self.free_domino_list]}")
         else:
             raise Exception("You have to write generate or input")
