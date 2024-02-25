@@ -1,3 +1,4 @@
+import secrets
 class Dominoes:
     domino_num = 0
     def __init__(self, first_num, second_num):
@@ -10,7 +11,7 @@ class Dominoes:
         return f"({self.first_num}, {self.second_num})"
 
     def __copy__(self):
-        return Dominoes(self.first_num, self.second_num, self.id)
+        return Dominoes(self.first_num, self.second_num)
 
     def __eq__(self, other):
         if type(other) == Dominoes:
@@ -49,32 +50,41 @@ class Dominoes:
         return domino
 
 
+def domino_generator():
+    num1 = secrets.choice(range(7))
+    num2 = secrets.choice(range(7))
+    return Dominoes(num1, num2)
+
+
 class DominoChain:
     def __init__(self, domino_num):
-        domino_list = []
-        for i in range(domino_num):
-            inp = [int(j) for j in input().split()]
-            if len(inp) == 2 and 0 < inp[0] <= 6 and 0 < inp[1] <= 6:
-                domino_list.append(Dominoes(inp[0], inp[1]))
-            else:
-                raise TypeError("You have to input 2 elements both of which are in between 1 and 6")
-        self.free_domino_list = domino_list.copy()
+        self.free_domino_list = []
+        gen_or_input = input("""Write generate if you want automatically generated dominoes or write input if you want to input dominoes yourself\n""")
+        if "i" in gen_or_input.lower():
+            for i in range(domino_num):
+                inp = [int(j) for j in input().split()]
+                if len(inp) == 2 and 0 <= inp[0] <= 6 and 0 <= inp[1] <= 6:
+                    self.free_domino_list.append(Dominoes(inp[0], inp[1]))
+                else:
+                    raise TypeError("You have to input 2 elements both of which are in between 1 and 6")
+        elif "g" in gen_or_input.lower():
+            for i in range(domino_num):
+                self.free_domino_list.append(domino_generator())
+            print(f"These are the the generated dominoes: {[i for i in self.free_domino_list]}")
         self.domino_chain = []
         self.dominoes_num = domino_num
         self.maxL = 0
         self.maxPath = []
 
     def __repr__(self):
-        self.update()
         result = """"""
-        for i in self.domino_chain:
-            result += f"{i} \n"
+        for i in self.maxPath:
+            if i[1] == 'B':
+                result += f"{i[0]} "
+            elif i[1] == 'R':
+                result += f"{i[0].reverse()} "
+        result += f"\nMax length is {self.maxL}"
         return result
-
-    def update(self):
-        res = []
-        [res.append(x) for x in self.domino_chain if x not in res]
-        self.domino_chain = res.copy()
 
     # def create_chain(self, free_dominoes_num, start=0, finish=0, possibility_num=0):
     #     for i in range(free_dominoes_num):
@@ -125,36 +135,35 @@ class DominoChain:
                 finish = base_domino.second_num
                 self.domino_chain.append([Dominoes(start, finish), 'B'])
                 self.create_chain(free_dominoes_num - 1, start, finish,)
-                self.free_domino_list.insert(0, base_domino)
+                self.free_domino_list.insert(i, base_domino)
                 self.domino_chain.pop(0)
                 start = 0
             else:
-                if self.domino_chain[len(self.domino_chain) - 1][0].second_num == base_domino.first_num:
+                if finish == base_domino.first_num:
                     self.domino_chain.append([base_domino, 'B'])
                     self.create_chain(free_dominoes_num - 1, start, base_domino.second_num)
                     changed = True
-                elif self.domino_chain[len(self.domino_chain) - 1][0].second_num == base_domino.second_num:
+                elif finish == base_domino.second_num:
                     self.domino_chain.append([base_domino, 'R'])
                     self.create_chain(free_dominoes_num - 1, start, base_domino.first_num)
                     changed = True
                 else:
-                    self.free_domino_list.insert(0, base_domino)
-            if len(self.domino_chain) > self.maxL:
+                    self.free_domino_list.insert(i, base_domino)
+            if (len(self.domino_chain) > self.maxL) or (len(self.domino_chain) == self.dominoes_num):
                 self.maxL = len(self.domino_chain)
                 self.maxPath = self.domino_chain.copy()
             if changed and self.domino_chain[len(self.domino_chain) - 1][0] == base_domino:
-                self.free_domino_list.insert(0, self.domino_chain[len(self.domino_chain) - 1][0])
+                self.free_domino_list.insert(i, self.domino_chain[len(self.domino_chain) - 1][0])
                 self.domino_chain.pop(len(self.domino_chain) - 1)
-            if len(self.domino_chain) == self.dominoes_num:
-                return (self.domino_chain, self.dominoes_num)
-        if start == 0 and finish != 0 and free_dominoes_num == self.dominoes_num:
+        if (start == 0 and finish != 0 and free_dominoes_num == 0) or (self.maxL == self.dominoes_num):
             return (self.maxPath, self.maxL)
 
 
 def main():
-    domino_num = int(input())
+    domino_num = int(input("Enter domino number:\n"))
     domino_chain = DominoChain(domino_num)
-    print(domino_chain.create_chain(len(domino_chain.free_domino_list)))
+    domino_chain.create_chain(len(domino_chain.free_domino_list))
+    print(domino_chain)
 
 
 
