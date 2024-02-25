@@ -66,6 +66,8 @@ class DominoChain:
             for i in range(domino_num):
                 self.free_domino_list.append(self.domino_generator())
             print(f"These are the the generated dominoes: {[i for i in self.free_domino_list]}")
+        else:
+            raise Exception("You have to write generate or input")
         self.domino_chain = []
         self.dominoes_num = domino_num
         self.maxL = 0
