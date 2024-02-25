@@ -1,11 +1,10 @@
 import secrets
+
+
 class Dominoes:
-    domino_num = 0
     def __init__(self, first_num, second_num):
         self.first_num = first_num
         self.second_num = second_num
-        Dominoes.domino_num += 1
-        self.id = Dominoes.domino_num
 
     def __repr__(self):
         return f"({self.first_num}, {self.second_num})"
@@ -50,26 +49,22 @@ class Dominoes:
         return domino
 
 
-def domino_generator():
-    num1 = secrets.choice(range(7))
-    num2 = secrets.choice(range(7))
-    return Dominoes(num1, num2)
-
-
 class DominoChain:
     def __init__(self, domino_num):
+        if domino_num > 28:
+            domino_num = 28
         self.free_domino_list = []
         gen_or_input = input("""Write generate if you want automatically generated dominoes or write input if you want to input dominoes yourself\n""")
-        if gen_or_input.lower() in "input":
+        if gen_or_input.lower().startswith("input"[:len(gen_or_input)]):
             for i in range(domino_num):
                 inp = [int(j) for j in input().split()]
                 if len(inp) == 2 and 0 <= inp[0] <= 6 and 0 <= inp[1] <= 6:
                     self.free_domino_list.append(Dominoes(inp[0], inp[1]))
                 else:
                     raise TypeError("You have to input 2 elements both of which are in between 1 and 6")
-        elif gen_or_input.lower() in "generate":
+        elif gen_or_input.lower().startswith("generate"[:len(gen_or_input)]):
             for i in range(domino_num):
-                self.free_domino_list.append(domino_generator())
+                self.free_domino_list.append(self.domino_generator())
             print(f"These are the the generated dominoes: {[i for i in self.free_domino_list]}")
         self.domino_chain = []
         self.dominoes_num = domino_num
@@ -85,6 +80,13 @@ class DominoChain:
                 result += f"{i[0].reverse()} "
         result += f"\nMax length is {self.maxL}"
         return result
+
+    def domino_generator(self):
+        while True:
+            num1 = secrets.choice(range(7))
+            num2 = secrets.choice(range(7))
+            if Dominoes(num1, num2) not in self.free_domino_list:
+                return Dominoes(num1, num2)
 
     # def create_chain(self, free_dominoes_num, start=0, finish=0, possibility_num=0):
     #     for i in range(free_dominoes_num):
