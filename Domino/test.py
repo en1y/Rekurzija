@@ -1,7 +1,3 @@
-a = [2]
-a.insert(0, 1)
-
-a = list(set(a))
-
-print(hash(a))
-
+a = [1,2]
+a.insert(0, 2)
+print(a, )
