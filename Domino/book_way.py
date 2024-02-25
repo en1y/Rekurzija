@@ -60,14 +60,14 @@ class DominoChain:
     def __init__(self, domino_num):
         self.free_domino_list = []
         gen_or_input = input("""Write generate if you want automatically generated dominoes or write input if you want to input dominoes yourself\n""")
-        if "i" in gen_or_input.lower():
+        if gen_or_input.lower() in "input":
             for i in range(domino_num):
                 inp = [int(j) for j in input().split()]
                 if len(inp) == 2 and 0 <= inp[0] <= 6 and 0 <= inp[1] <= 6:
                     self.free_domino_list.append(Dominoes(inp[0], inp[1]))
                 else:
                     raise TypeError("You have to input 2 elements both of which are in between 1 and 6")
-        elif "g" in gen_or_input.lower():
+        elif gen_or_input.lower() in "generate":
             for i in range(domino_num):
                 self.free_domino_list.append(domino_generator())
             print(f"These are the the generated dominoes: {[i for i in self.free_domino_list]}")
