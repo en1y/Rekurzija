@@ -99,7 +99,7 @@ class DominoChain:
             if start == 0:
                 finish = base_domino.second_num
                 self.domino_chain.append([Dominoes(base_domino.first_num, finish), 'B'])
-                self.create_chain(free_dominoes_num - 1, start, finish,)
+                self.create_chain(free_dominoes_num - 1, base_domino.first_num, finish,)
                 self.free_domino_list.insert(i, base_domino)
                 self.domino_chain.pop(0)
             else:
