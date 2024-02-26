@@ -87,7 +87,7 @@ class DominoChain:
             for j in range(7):
                 self.free_domino_list.append(Dominoes(i, j))
         for i in range(28 - self.dominoes_num):
-            delete_num = secrets.choice(range(self.dominoes_num))
+            delete_num = secrets.choice(range(len(self.free_domino_list)))
             self.free_domino_list.pop(delete_num)
 
     def create_chain(self, free_dominoes_num=-1, start=0, finish=0):
