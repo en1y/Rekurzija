@@ -51,9 +51,9 @@ def evaluate(free_cells=63, x=int, y=int):
 
 
 # noinspection PyTypeChecker
-print(evaluate(x=knight_cords[0], y=knight_cords[1]))
-print(len(knight_moves))
+evaluate(x=knight_cords[0], y=knight_cords[1])
 for i in result_list:
     for j in i:
         print(cords_to_letters(j), end=" ")
     print()
+print(len(result_list))
