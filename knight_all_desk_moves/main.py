@@ -12,7 +12,7 @@ def cords_to_letters(cords):
     return str(letters[cords[0]] + str(8 - cords[1]))
 
 
-knight_cords = letters_to_cords(input().lower())
+knight_cords = letters_to_cords(input("Put in knight coordinates").lower())
 knight_moves = [knight_cords]
 
 
