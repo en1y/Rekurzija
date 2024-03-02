@@ -61,16 +61,17 @@ def evaluate(free_cells=63, x=int, y=int):
                     evaluate(free_cells - 1, move_cords[0], move_cords[1])
                 if counter == 0:
                     break
-                knight_moves.pop(-1)
+                knight_moves.remove(move_cords)
                 chess_board[move_cords[0]][move_cords[1]] = False
         return final_var
     else:
         if knight_moves not in result_list:
             counter -= 1
+            result_list.append(knight_moves.copy())
             for i in knight_moves:
                 print(cords_to_letters(i), end=" ")
             print()
-            check_if_correct()
+            # check_if_correct()
         return 1
 
 
